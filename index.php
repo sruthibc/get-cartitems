@@ -49,36 +49,35 @@ function get_cart_items(){
 
     foreach ($quoteitems as $item) {
 
-    $options = $item->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
+        $options = $item->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
 
-    if (isset($options['options'])) {
-        $options['options'] = $options['options'] ? $options['options'] : null;
-        $customOptions = $options['options'] ? $options['options'] : null;
+        if (isset($options['options'])) {
+            $options['options'] = $options['options'] ? $options['options'] : null;
+            $customOptions = $options['options'] ? $options['options'] : null;
 
-        if (!empty($customOptions)) {
-        foreach ($customOptions as $option) {
-            $arrProducts[$j]['productOption'][] = ['label' => $option['label'], 'value' => $option['value'], 'name' => $item->getName()];
+            if (!empty($customOptions)) {
+                foreach ($customOptions as $option) {
+                    $arrProducts[$j]['productOption'][] = ['label' => $option['label'], 'value' => $option['value'], 'name' => $item->getName()];
+                }
+            }
         }
-        }
+
+        $arrProducts[$j]['productID'] = $item->getProductId();
+        $arrProducts[$j]['productName'] = $item->getName();
+        $arrProducts[$j]['productQty'] = $item->getQty();
+        $arrProducts[$j]['productPrice'] = number_format($item->getPrice(), 2);
+        $qty += $item->getQty();
+
+        $_product = $obj->get('Magento\Catalog\Model\Product')->load($item->getProductId());
+        $arrProducts[$j]['productUrl'] = $_product->getUrlKey();
+
+        $_product->getSmallImage();
+        $arrProducts[$j]['productImage'] = $mediaurl . 'catalog/product' . $_product->getSmallImage();
+
+        $j++;
     }
 
-    $arrProducts[$j]['productID'] = $item->getProductId();
-    $arrProducts[$j]['productName'] = $item->getName();
-    $arrProducts[$j]['productQty'] = $item->getQty();
-    $arrProducts[$j]['productPrice'] = number_format($item->getPrice(), 2);
-    $qty += $item->getQty();
-
-    $_product = $obj->get('Magento\Catalog\Model\Product')->load($item->getProductId());
-    $arrProducts[$j]['productUrl'] = $_product->getUrlKey();
-
-    $_product->getSmallImage();
-    $arrProducts[$j]['productImage'] = $mediaurl . 'catalog/product' . $_product->getSmallImage();
-
-    $j++;
-    }
-
-return $arrProducts;
-
+    return $arrProducts;
 }
 
 ?>
