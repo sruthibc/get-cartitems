@@ -1,10 +1,6 @@
 <?php
 
-ini_set("display_errors", true);
-ini_set("error_reporting", E_ALL);
-
-//use Magento\Framework\App\Bootstrap;
-require '/app/bootstrap.php'; // Magento bootstrap path
+require '/app/bootstrap.php'; 
 
 function get_cart_items(){
 
@@ -21,10 +17,14 @@ function get_cart_items(){
 
     $variable  = $obj->get('\Magento\Variable\Model\Variable');
 
-    // Set the state
+    /*
+    * Get the state
+    */
     $state = $obj->get('Magento\Framework\App\State');
 
-    // Getting the object managers dependencies
+    /*
+    * Getting the object managers dependencies
+    */
     $quote          = $obj->get('Magento\Checkout\Model\Session')->getQuote();
     $shoppingcart   = $obj->get('\Magento\Checkout\Model\Cart');
     $imagehelper    = $obj->get('\Magento\Catalog\Helper\Image');
@@ -33,10 +33,14 @@ function get_cart_items(){
     $quote = $shoppingcart->getQuote();
     $quoteitems = $quote->getAllItems();
 
-    // Getting cart
+    /*
+    * Getting cart
+    */
     $cart = $shoppingcart->getCart();
 
-    // Getting the subtotal of the cart
+    /*
+    * Getting the subtotal of the cart
+    */
     $subtotal = number_format($quote->getBaseSubtotal(), 2);
     $qty = 0; //set quantity 0
 
@@ -75,7 +79,6 @@ function get_cart_items(){
 
         $j++;
     }
-
     return $arrProducts;
 }
 
